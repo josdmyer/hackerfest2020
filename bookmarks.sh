@@ -1,30 +1,44 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# ----------------------------------------------------------------------------
-# Name:  		x
-# File Name:	bookmark.sh
-# Date:  	    Oct 1, 2020
-# Description:  A bash script to get a clean output of bookmarks with title 
-#				and url then clean up files once done
-# ---------------------------------------------------------------------------
+exec 3>&1 4>&2
+trap 'exec 2>&4 1>&3' 0 1 2 3
+exec 1>newbookmark.log 2>&1
 
-# Prompt for key return until then wait
-press()
-{
-	read -p "Press [Enter] key to continue..."
-	clear
+set -o errexit
+set -o pipefail
+set -o nounset
+set -o xtrace
+
+# Set magic variables for current file & dir
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+__base="$(basename ${__file} .sh)"
+__root="$(cd "$(dirname "${__dir}")" && pwd)" # <-- change this as it depends on your app
+
+arg1="${1:-}"
+
+# trap ctrl-c and call ctrl_c()
+trap ctrl_c INT
+
+function ctrl_c() {
+  echo "** Trapped CTRL-C"
 }
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Main ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-clear
+for i in `seq 1 5`; do
+  sleep 1
+  echo -n "."
+done
 
-mv /Users/x/Documents/Safari\ Bookmarks.html /Users/x/Documents/Keep/Misc/Safari/sf.html
+# Get a copy of bookmarks in xml format and save it on the Desktop
+plutil -convert xml1 -o ~/Desktop/SafariBookmarks.xml ~/Library/Safari/Bookmarks.plist
 
-perl -0ne 'print "$2\n$1\n" while (/a href=\"(.*?)\">(.*?)<\/a>/igs)' "/Users/x/Documents/Keep/Misc/Safari/sf.html" >> "/Users/x/Documents/Keep/Misc/Safari/temp"
+# Create new temp file that has the title and url only in plain format and store it in a file called temp on the Desktop
+grep -A1 -E '(>URLString<|>title<)' /Users/x/Desktop/SafariBookmarks.xml |grep -v -E '(>URLString|>title|^--)' | cut -d\> -f2 | cut -d\< -f1  >> /Users/x/Desktop/temp
 
-press
+mysql  < /Users/x/.Scripts/Bookmark-db/sql.sql
 
-rm /Users/x/Documents/Keep/Misc/Safari/temp
-rm /Users/x/Documents/Keep/Misc/Safari/sf.html
+# Clean Up
+rm /Users/x/Desktop/SafariBookmarks.xml || true
+rm /Users/x/Desktop/temp || true
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End of File ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+exit 0
