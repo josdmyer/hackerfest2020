@@ -1,19 +1,29 @@
 #!/bin/bash
 
- # ---------------------------------------------------------------------------
- # Name:			xuser
- # File Name:	backup.sh
- # Date:  		Oct 1, 2020
- # Description:  A bash script to backup files properly so they won't be
- #				corrupted so easily by just copying and pasting.  
- #			This script will handle many situations from default source and 
- #			destination to specific source or specific dest or both specific
- #				source and destination
- # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Name:			xuser
+# File Name:	backup.sh
+# Date:  		Oct 1, 2020
+# Description:  A bash script to backup files properly so they won't be
+#			corrupted so easily by just copying and pasting.  
+#			This script will handle many situations from default source and 
+#			destination to specific source or specific dest or both specific
+#			source and destination
+# ---------------------------------------------------------------------------
 
  # Local variables
  default_src=/Users/x/Downloads/files/
  default_dest=/Volumes/My\ Passport/files/
+
+ usage()
+ {
+    echo "./backup              (backup default source to default destination)"
+    echo "./backup -s path      (backup specific source to default destination)"
+    echo "./backup -d path      (backup default source to specific destination)"
+    echo "./backup    path path (backup specific source to specific destination)"
+    press
+    clear
+ }
 
  # Function to prompt for key return until then wait
  press()
@@ -46,17 +56,7 @@
  	/Users/x/Downloads/Software/rsync-3.1.1/rsync -a --info=progress2 "$1/" "$2/"
  }
 
- usage()
- {
- 	echo "./backup              (backup default source to default destination)"
- 	echo "./backup -s path      (backup specific source to default destination)"
- 	echo "./backup -d path      (backup default source to specific destination)"
- 	echo "./backup    path path (backup specific source to specific destination)"
- 	press
- 	clear
- }
-
- # ------------------------------ Main -----------------------------------------
+ # ------------------------------ Main ---------------------------------------
  clear
  if [ "$#" -eq 0 ]
  then
@@ -78,4 +78,4 @@
  else
  	usage
  fi
- # ------------------------------- End of File ---------------------------------
+ # ------------------------------- End of File ------------------------------
