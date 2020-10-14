@@ -17,7 +17,7 @@
  # Function to prompt for key return until then wait
  press()
  {
- 	read -p "Press [Enter] key to continue..."
+ 	read -r -p "Press [Enter] key to continue..."
  	clear
  }
 
