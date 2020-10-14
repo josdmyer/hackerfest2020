@@ -3,5 +3,3 @@
 
 This will be the repo for Hackerfest 2020 for my projects.  
 I have switched out master to main.
-
-Superlinter Badge is showing now and trying to get it to show pass
