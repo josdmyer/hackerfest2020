@@ -18,7 +18,7 @@ result=""
 action()
 {
 	printf ": "
-	read -s input
+	read -s -r input
 	result=$(echo "$password"| openssl enc -aes-128-cbc -a -d -salt -pass pass:wtf)
 
 	if [ "$result" = "$input" ]

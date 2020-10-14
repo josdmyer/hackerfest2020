@@ -9,18 +9,6 @@ set -o pipefail
 set -o nounset
 set -o xtrace
 
-# trap ctrl-c and call ctrl_c()
-trap ctrl_c INT
-
-function ctrl_c() {
-  echo "** Trapped CTRL-C"
-}
-
-for i in `seq 1 5`; do
-  sleep 1
-  echo -n "."
-done
-
 # Get a copy of bookmarks in xml format and save it on the Desktop
 plutil -convert xml1 -o ~/Desktop/SafariBookmarks.xml ~/Library/Safari/Bookmarks.plist
 
