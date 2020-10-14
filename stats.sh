@@ -14,7 +14,7 @@
 
  clear
 
- cd /Users/x/Documents/Books/Books/
+ cd /Users/x/Documents/Books/Books/ || exit
 
  echo -n "Epub:  "
  find . -type f -iname '*.epub' -exec du -ch {} + | grep total$ 
@@ -27,5 +27,5 @@
 
  echo "Number of files:  $files4"
  echo
- cd
+ cd || exit
  #--------------------------------- End of file -----------------------------
