@@ -1,16 +1,5 @@
 #!/bin/bash
 
-# ---------------------------------------------------------------------------
-# Name:			xuser
-# File Name:	backup.sh
-# Date:  		Oct 1, 2020
-# Description:  A bash script to backup files properly so they won't be
-#			corrupted so easily by just copying and pasting.  
-#			This script will handle many situations from default source and 
-#			destination to specific source or specific dest or both specific
-#			source and destination
-# ---------------------------------------------------------------------------
-
  # Local variables
  default_src=/Users/x/Downloads/files/
  default_dest=/Volumes/My\ Passport/files/
